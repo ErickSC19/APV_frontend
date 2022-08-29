@@ -42,8 +42,9 @@ const Register = () => {
                 error: false
             })
         } catch (error) {
+            
             setAlert({
-                msg: error.response.data.msg,
+                msg: error.message,
                 error: true
             })
         }
