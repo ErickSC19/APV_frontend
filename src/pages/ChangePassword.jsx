@@ -25,7 +25,7 @@ const ChangePassword = () => {
       })
     } catch (error) {
       setAlert({
-        msg: error.response.data.msg,
+        msg: error.message,
         error: true
       })
     }
