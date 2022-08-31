@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import axiosClient from '../config/axios'
 import useAuth from '../hooks/useAuth'
 import Alert from '../components/Alert'
@@ -9,6 +9,8 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [alert, setAlert] = useState({})
+
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -24,6 +26,8 @@ const Login = () => {
         try {
             const {data} = await axiosClient.post('/veterinarians/login', {email, password})
             localStorage.setItem('token', data.token)
+
+            navigate('/admin')
         } catch (error) {
             setAlert({
                 msg: error.message,
