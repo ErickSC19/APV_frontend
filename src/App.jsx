@@ -16,7 +16,7 @@ function App() {
 
   return (
     <BrowserRouter>
-    <AuthProvide>
+    <AuthProvider>
       <Routes>
         <Route path='/' element={<AuthLayout />}>
             <Route index element={<Login />} />
@@ -30,7 +30,7 @@ function App() {
             <Route index element={<AdminPatients/>}></Route>
         </Route>
       </Routes>
-      </AuthProvide>
+      </AuthProvider>
     </BrowserRouter>
   )
 }
