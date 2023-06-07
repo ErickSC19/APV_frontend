@@ -9,6 +9,7 @@ import Confirm from './pages/Confirm';
 import ChangePassword from './pages/ChangePassword';
 import NewPassword from './pages/NewPassword';
 import AdminPatients from './pages/AdminPatients';
+import Profile from './pages/Profile';
 
 import { AuthProvider } from './context/AuthProvider';
 
@@ -27,6 +28,7 @@ function App () {
 
           <Route path='/admin' element={<ProtectedLayout />}>
             <Route index element={<AdminPatients />} />
+            <Route path='profile' element={<Profile />} />
           </Route>
         </Routes>
       </AuthProvider>

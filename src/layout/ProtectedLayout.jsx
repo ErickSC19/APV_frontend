@@ -12,9 +12,9 @@ const ProtectedLayout = () => {
   }
   return (
     <>
-      <div className='flex flex-col items-center'>
+      <div className='flex flex-col items-center min-h-screen'>
         <Header />
-        {auth?.veterinarians?._id ? (<main className='container mx-auto mt-10'><Outlet /></main>) : <Navigate to='/' />}
+        {auth?.veterinarian?._id ? (<main className='container mx-auto mt-10'><Outlet /></main>) : <Navigate to='/' />}
         <Footer />
       </div>
     </>

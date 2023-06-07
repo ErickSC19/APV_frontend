@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function useLocalStorage (key) {
+  // eslint-disable-next-line no-undef
+  const v = useRef(localStorage.getItem(key));
   // eslint-disable-next-line no-undef
   const [value, setValue] = useState(localStorage.getItem(key));
 

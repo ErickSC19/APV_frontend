@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axiosClient from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Alert from '../components/Alert';
@@ -9,8 +9,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const { keep, changeKeep } = useAuth();
   const [alert, setAlert] = useState({});
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,12 +24,14 @@ const Login = () => {
     try {
       const { data } = await axiosClient.post('/veterinarians/login', {
         email,
-        password
+        password,
+        keep
       });
       // eslint-disable-next-line no-undef
       localStorage.setItem('token', data.token);
       setTimeout(() => {
-        navigate('/admin');
+        // eslint-disable-next-line no-undef
+        location.reload();
       }, 100);
     } catch (error) {
       console.log(error);
@@ -59,7 +59,7 @@ const Login = () => {
             </label>
             <input
               type='text'
-              placeholder='Registred email'
+              placeholder='Registered email'
               className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -81,7 +81,7 @@ const Login = () => {
             <input
               type='submit'
               value='Log in'
-              className='bg-indigo-700 py-3 px-10 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-indigo-800 w-auto'
+              className='bg-indigo-700 py-3 px-10 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-indigo-800 transition-colors w-auto'
             />
             <div className='flex items-center'>
               <input type='checkbox' value={keep} name='Keep Session' id='keep' className='rounded-md h-5 w-5 hover:cursor-pointer mr-1 bg-gray-50 focus:ring-indigo-600 checked:hover:bg-indigo-800 checked:active:hover:bg-indigo-800 checked:focus:bg-indigo-600 checked:bg-indigo-600' onChange={e => changeKeep(!keep)} />
@@ -92,16 +92,16 @@ const Login = () => {
           </div>
         </form>
         <nav className='mt-10 lg:flex lg:justify-between'>
-          <Link className='block text-center mt-5 text-gray-500' to='/register'>
+          <Link className='block text-center text-gray-500' to='/register'>
             If you don't have an account you can register{' '}
-            <span className='text-indigo-400 underline'>here</span>
+            <span className='text-indigo-400 underline hover:text-indigo-500 transition-colors'>here</span>
           </Link>
           <Link
-            className='block text-center mt-5 text-gray-500'
+            className='block text-center text-gray-500 mt-5 lg:mt-0'
             to='/change-password'
           >
             Forgot yor password? you can retrieve it{' '}
-            <span className='text-indigo-400 underline'>here</span>
+            <span className='text-indigo-400 underline hover:text-indigo-500 transition-colors'>here</span>
           </Link>
         </nav>
       </div>

@@ -1,11 +1,12 @@
 import { useState, useEffect, createContext } from 'react';
 import axiosClient from '../config/axios';
-import useLocalStorage from '../hooks/useLocalStorage';
+// import useLocalStorage from '../hooks/useLocalStorage';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const localToken = useLocalStorage('token');
+  // const localToken = useLocalStorage('token');
+  // const [config, setConfig] = useState({});
   const [loading, setLoading] = useState(true);
   const [auth, setAuth] = useState({});
   const [keep, setKeep] = useState(false);
@@ -16,43 +17,45 @@ const AuthProvider = ({ children }) => {
 
   const closeSession = () => {
     // eslint-disable-next-line no-undef
-    localStorage.removeItem('token');
+    // localStorage.removeItem('token');
     setAuth({});
   };
 
   useEffect(() => {
     const authUser = async () => {
       // eslint-disable-next-line no-undef
-      // const token = localStorage.getItem('token');
-      if (!localToken) {
+      const token = localStorage.getItem('token');
+      if (!token) {
         setLoading(false);
         return;
       }
-
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localToken}`
+          Authorization: `Bearer ${token}`
         }
       };
 
       try {
+        console.log(config);
         const { data } = await axiosClient('/veterinarians/profile', config);
 
         setAuth(data);
       } catch (error) {
         console.log(error.message);
+        // eslint-disable-next-line no-undef
+        localStorage.removeItem('token');
         setAuth({});
       }
       setLoading(false);
     };
     authUser();
-  }, [localToken]);
+  }, []);
 
   useEffect(() => {
     const handleBeforeUnload = () => {
       // eslint-disable-next-line no-undef
-      localStorage.removeItem('token');
+      // localStorage.removeItem('token');
     };
 
     if (keep) {

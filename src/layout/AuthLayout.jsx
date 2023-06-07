@@ -19,7 +19,7 @@ const AuthLayout = () => {
   return (
     <>
       <main className='container mx-auto md:grid md:grid-cols-2 h-screen gap-12 p-5 items-center'>
-        {auth?.veterinarians?._id ? <Navigate to='/admin' /> : <Outlet />}
+        {auth?.veterinarian?._id ? <Navigate to='/admin' /> : <Outlet />}
       </main>
     </>
   );

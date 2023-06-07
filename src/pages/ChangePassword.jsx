@@ -57,7 +57,7 @@ const ChangePassword = () => {
             </label>
             <input
               type='text'
-              placeholder='Registred email'
+              placeholder='Registered email'
               className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -66,22 +66,22 @@ const ChangePassword = () => {
 
           <input
             type='submit'
-            value='Send instructions'
-            className='bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto'
+            value='Send Instructions'
+            className='bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 transition-colors md:w-auto'
           />
         </form>
         <nav className='mt-10 lg:flex lg:justify-between'>
           <Link
-            className='block text-center my-5 text-gray-500'
+            className='block text-center text-gray-500 lg:flex-1'
             to='/register'
           >
-            If you don't have an account you can register <span className='text-indigo-400 underline'>here</span>
+            If you don't have an account you can register{' '}<span className='text-indigo-400 underline hover:text-indigo-500 transition-colors'>here</span>
           </Link>
           <Link
-            className='block text-center my-5 text-gray-500'
+            className='block text-center text-gray-500 mt-5 lg:mt-0 lg:flex-1 place-self-center'
             to='/'
           >
-            Go back to log in <span className='text-indigo-400 underline'>here</span>
+            Go back to log in{' '}<span className='text-indigo-400 underline hover:text-indigo-500 transition-colors'>here</span>
           </Link>
         </nav>
       </div>

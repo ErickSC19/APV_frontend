@@ -83,7 +83,7 @@ const Register = () => {
             </label>
             <input
               type='text'
-              placeholder='email@email.com'
+              placeholder='your email here'
               className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -116,13 +116,13 @@ const Register = () => {
           <input
             type='submit'
             value='Register'
-            className='bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto'
+            className='bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 transition-colors md:w-auto'
           />
         </form>
         <nav className='mt-10 lg:flex lg:justify-between'>
-          <Link className='block text-center my-5 text-gray-500' to='/'>
+          <Link className='block text-center text-gray-500' to='/'>
             If you already have an account you can log in{' '}
-            <span className='text-indigo-400 underline'>here</span>
+            <span className='text-indigo-400 underline hover:text-indigo-500 transition-colors'>here</span>
           </Link>
         </nav>
       </div>
