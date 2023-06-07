@@ -1,55 +1,60 @@
-import {useState, useEffect, createContext} from 'react'
-import axiosClient from '../config/axios'
+import { useState, useEffect, createContext } from 'react';
+import axiosClient from '../config/axios';
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
-const AuthProvider = ({children}) =>{
-    const [loadingA, setLoadingA] = useState(true)
-    const [auth, setAuth] = useState({})
+const AuthProvider = ({ children }) => {
+  const [loading, setLoading] = useState(true);
+  const [auth, setAuth] = useState({});
+  const [keep, setKeep] = useState(false);
 
-    useEffect(() => {
-        const authUser = async () => {
-            const token = localStorage.getItem('token')
-            if(!token) {
-                setLoadingA(false)
-                return
-            }
+  const changeKeep = (v) => {
+    setKeep(v);
+  };
+  useEffect(() => {
+    const authUser = async () => {
+      // eslint-disable-next-line no-undef
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            }
-
-            try {
-                const {data} = await axiosClient('/veterinarians/profile', config)
-
-                setAuth(data)
-            } catch (error) {
-                console.log(error.message);
-                setAuth({})
-            }
-            setLoadingA(false)
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         }
-        authUser()
-    }, [])
+      };
 
-    return(
-        <AuthContext.Provider
-            value={{
-                auth,
-                setAuth,
-                loadingA
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    )
-}
+      try {
+        const { data } = await axiosClient('/veterinarians/profile', config);
 
-export {
-    AuthProvider
-}
+        setAuth(data);
+      } catch (error) {
+        console.log(error.message);
+        setAuth({});
+      }
+      setLoading(false);
+    };
+    authUser();
+  }, []);
 
-export default AuthContext
+  return (
+    <AuthContext.Provider
+      value={{
+        auth,
+        setAuth,
+        changeKeep,
+        keep,
+        loading
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export { AuthProvider };
+
+export default AuthContext;
