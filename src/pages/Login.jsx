@@ -30,10 +30,13 @@ const Login = () => {
       });
       // eslint-disable-next-line no-undef
       localStorage.setItem('token', data.token);
-      navigate('/admin');
+      setTimeout(() => {
+        navigate('/admin');
+      }, 100);
     } catch (error) {
+      console.log(error);
       setAlert({
-        msg: error.message,
+        msg: error.response.data.msg,
         error: true
       });
     }
@@ -57,7 +60,7 @@ const Login = () => {
             <input
               type='text'
               placeholder='Registred email'
-              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl'
+              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -69,7 +72,7 @@ const Login = () => {
             <input
               type='password'
               placeholder='password'
-              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl'
+              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -78,10 +81,10 @@ const Login = () => {
             <input
               type='submit'
               value='Log in'
-              className='bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-indigo-800 md:w-auto'
+              className='bg-indigo-700 py-3 px-10 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-indigo-800 w-auto'
             />
             <div className='flex items-center'>
-              <input type='checkbox' value={keep} name='Keep Session' id='keep' className='rounded h-5 w-5 hover:cursor-pointer mr-1' onChange={e => changeKeep(!keep)} />
+              <input type='checkbox' value={keep} name='Keep Session' id='keep' className='rounded-md h-5 w-5 hover:cursor-pointer mr-1 bg-gray-50 focus:ring-indigo-600 checked:hover:bg-indigo-800 checked:active:hover:bg-indigo-800 checked:focus:bg-indigo-600 checked:bg-indigo-600' onChange={e => changeKeep(!keep)} />
               <label htmlFor='keep' className='block text-center text-gray-500'>
                 Keep session
               </label>

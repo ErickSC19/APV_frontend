@@ -1,15 +1,22 @@
-import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import React from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import useAuth from '../hooks/useAuth';
 
 const ProtectedLayout = () => {
-  const { auth, loadingA } = useAuth();
+  const { auth, loading } = useAuth();
 
-  if (loadingA) return console.log("loading");
+  if (loading) {
+    return <main>loading</main>;
+  }
   return (
     <>
-      <div>ProtectedLayout</div>
-      {auth?.id ? <Outlet /> : <Navigate to="/" />}
+      <div className='flex flex-col items-center'>
+        <Header />
+        {auth?.veterinarians?._id ? (<main className='container mx-auto mt-10'><Outlet /></main>) : <Navigate to='/' />}
+        <Footer />
+      </div>
     </>
   );
 };

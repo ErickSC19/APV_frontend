@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 const AdminPatients = () => {
   return (
     <div>Admin Patients</div>
-  )
-}
+  );
+};
 
-export default AdminPatients
+export default AdminPatients;
