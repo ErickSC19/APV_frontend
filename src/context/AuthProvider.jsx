@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
 
   const closeSession = () => {
     // eslint-disable-next-line no-undef
-    // localStorage.removeItem('token');
+    localStorage.removeItem('token');
     setAuth({});
   };
 
@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const handleBeforeUnload = () => {
       // eslint-disable-next-line no-undef
-      // localStorage.removeItem('token');
+      localStorage.removeItem('token');
     };
 
     if (keep) {

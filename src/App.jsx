@@ -12,6 +12,7 @@ import AdminPatients from './pages/AdminPatients';
 import Profile from './pages/Profile';
 
 import { AuthProvider } from './context/AuthProvider';
+import { PatientProvider } from './context/PatientProvider';
 
 function App () {
   return (
@@ -25,11 +26,12 @@ function App () {
             <Route path='change-password' element={<ChangePassword />} />
             <Route path='change-password/:token' element={<NewPassword />} />
           </Route>
-
-          <Route path='/admin' element={<ProtectedLayout />}>
-            <Route index element={<AdminPatients />} />
-            <Route path='profile' element={<Profile />} />
-          </Route>
+          <PatientProvider>
+            <Route path='/admin' element={<ProtectedLayout />}>
+              <Route index element={<AdminPatients />} />
+              <Route path='profile' element={<Profile />} />
+            </Route>
+          </PatientProvider>
         </Routes>
       </AuthProvider>
     </BrowserRouter>

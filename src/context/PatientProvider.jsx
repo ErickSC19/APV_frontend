@@ -1,12 +1,29 @@
 import { createContext, useEffect, useState } from 'react';
 import axiosClient from '../config/axios';
-import useAuth from '../hooks/useAuth';
 
 const PatientsContext = createContext();
 
 const PatientProvider = ({ children }) => {
-  const { config } = useAuth();
   const [patients, setPatients] = useState([]);
+  // eslint-disable-next-line no-undef
+  const token = localStorage.getItem('hydmot_token');
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  const addPatient = async (patient) => {
+    try {
+      const { data } = await axiosClient.post('/patients', patient, config);
+      const { createdAt, updatedAt, __v, ...newPatient } = data;
+
+      setPatients([newPatient, ...patients]);
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+  };
 
   useEffect(() => {
     const getPatients = async () => {
@@ -22,7 +39,7 @@ const PatientProvider = ({ children }) => {
   }, []);
   return (
     <PatientsContext.Provider
-      value={{ patients }}
+      value={{ patients, addPatient }}
     >
       {children}
     </PatientsContext.Provider>
