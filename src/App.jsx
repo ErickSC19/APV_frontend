@@ -18,21 +18,21 @@ function App () {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path='/' element={<AuthLayout />}>
-            <Route index element={<Login />} />
-            <Route path='register' element={<Register />} />
-            <Route path='confirm/:id' element={<Confirm />} />
-            <Route path='change-password' element={<ChangePassword />} />
-            <Route path='change-password/:token' element={<NewPassword />} />
-          </Route>
-          <PatientProvider>
+        <PatientProvider>
+          <Routes>
+            <Route path='/' element={<AuthLayout />}>
+              <Route index element={<Login />} />
+              <Route path='register' element={<Register />} />
+              <Route path='confirm/:id' element={<Confirm />} />
+              <Route path='change-password' element={<ChangePassword />} />
+              <Route path='change-password/:token' element={<NewPassword />} />
+            </Route>
             <Route path='/admin' element={<ProtectedLayout />}>
               <Route index element={<AdminPatients />} />
               <Route path='profile' element={<Profile />} />
             </Route>
-          </PatientProvider>
-        </Routes>
+          </Routes>
+        </PatientProvider>
       </AuthProvider>
     </BrowserRouter>
   );

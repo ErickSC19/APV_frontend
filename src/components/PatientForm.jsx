@@ -10,13 +10,13 @@ const PatientForm = () => {
   const [syntoms, setSyntoms] = useState('');
 
   const [alert, setAlert] = useState({});
-  const { savePatient } = usePatients();
+  const { addPatient } = usePatients();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      savePatient({ name, owner, email, date, syntoms });
+      addPatient({ name, owner, email, date, syntoms });
     } catch (error) {
       console.log(error);
       setAlert({
@@ -29,8 +29,9 @@ const PatientForm = () => {
   const { msg } = alert;
   return (
     <>
+      <h2 className='font-black text-3xl text-center'>Add a Patient</h2>
       <p className='text-xl text-center mb-10 font-semibold'>
-        Add patients to{' '}<span className='text-indigo-600 font-bold'>manage</span>
+        Then you can keep{' '}<span className='text-indigo-600 font-bold'>track of their state</span>
       </p>
 
       <form id='form' onSubmit={handleSubmit} className='bg-white py-10 px-5 nb-10 lg:mb-0 shadow-md rounded-md'>
@@ -55,7 +56,7 @@ const PatientForm = () => {
           <textarea id='syntoms' required placeholder="Pet's syntoms" form='form' rows='4' value={syntoms} onChange={(e) => setSyntoms(e.target.value)} className='border-2 resize-none border-gray-300 w-full p-2 mt-2 placeholder-gray-400 rounded-md' />
         </div>
         {msg && <Alert alert={alert} />}
-        <input type='submit' value='Add Patient' className='bg-indigo-600 text-white w-full p-3 rounded-md uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors' />
+        <input type='submit' value='Add Patient' className='bg-green-600 text-white w-full p-3 rounded-lg uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors' />
       </form>
     </>
   );
