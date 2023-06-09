@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Alert from '../components/Alert';
 import usePatients from '../hooks/usePatients';
 
 const PatientForm = () => {
+  const [id, setId] = useState(null);
   const [name, setName] = useState('');
   const [owner, setOwner] = useState('');
   const [email, setEmail] = useState('');
@@ -10,13 +11,23 @@ const PatientForm = () => {
   const [syntoms, setSyntoms] = useState('');
 
   const [alert, setAlert] = useState({});
-  const { addPatient } = usePatients();
+  const { addPatient, selectedPatient } = usePatients();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      addPatient({ name, owner, email, date, syntoms });
+      addPatient({ name, owner, email, date, syntoms, _id: id });
+      setAlert({
+        msg: 'Data Saved',
+        error: false
+      });
+      setId('');
+      setName('');
+      setEmail('');
+      setDate('');
+      setSyntoms('');
+      setOwner('');
     } catch (error) {
       console.log(error);
       setAlert({
@@ -25,6 +36,22 @@ const PatientForm = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (selectedPatient?._id) {
+      const newDate = new Date(selectedPatient.date);
+      const preFormat = newDate.toISOString().split('T', 1);
+      const dateFormated = preFormat[0];
+
+      console.log(dateFormated);
+      setId(selectedPatient._id);
+      setName(selectedPatient.name);
+      setEmail(selectedPatient.email);
+      setDate(dateFormated);
+      setSyntoms(selectedPatient.syntoms);
+      setOwner(selectedPatient.owner);
+    }
+  }, [selectedPatient]);
 
   const { msg } = alert;
   return (
@@ -56,7 +83,7 @@ const PatientForm = () => {
           <textarea id='syntoms' required placeholder="Pet's syntoms" form='form' rows='4' value={syntoms} onChange={(e) => setSyntoms(e.target.value)} className='border-2 resize-none border-gray-300 w-full p-2 mt-2 placeholder-gray-400 rounded-md' />
         </div>
         {msg && <Alert alert={alert} />}
-        <input type='submit' value='Add Patient' className='bg-green-600 text-white w-full p-3 rounded-lg uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors' />
+        <input type='submit' value={`${id ? 'Save Changes' : 'Add Patient'}`} className='bg-green-600 text-white w-full p-3 rounded-lg uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors' />
       </form>
     </>
   );

@@ -16,13 +16,37 @@ const PatientProvider = ({ children }) => {
   };
 
   const addPatient = async (patient) => {
-    try {
-      const { data } = await axiosClient.post('/patients', patient, config);
-      const { createdAt, updatedAt, __v, ...newPatient } = data;
+    if (patient._id) {
+      try {
+        const { data } = await axiosClient.put(`/patients/${patient._id}`, patient, config);
+        const patientsUpdate = patients.map(pstate => pstate._id === data._id ? data : pstate);
+        setPatients(patientsUpdate);
+      } catch (error) {
+        console.log(error.response.data.msg);
+      }
+    } else {
+      try {
+        const { data } = await axiosClient.post('/patients', patient, config);
+        const { createdAt, updatedAt, __v, ...newPatient } = data;
 
-      setPatients([newPatient, ...patients]);
-    } catch (error) {
-      console.log(error.response.data.msg);
+        setPatients([newPatient, ...patients]);
+      } catch (error) {
+        console.log(error.response.data.msg);
+      }
+    }
+  };
+
+  const deletePatient = async (id) => {
+    const confirm = window.confirm('Do you want to delete this patient?');
+
+    if (confirm) {
+      try {
+        await axiosClient.delete(`/patients/${id}`, config);
+        const patientsUpdate = patients.filter(pstate => pstate._id !== id);
+        setPatients(patientsUpdate);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -43,7 +67,7 @@ const PatientProvider = ({ children }) => {
   }, []);
   return (
     <PatientsContext.Provider
-      value={{ patients, addPatient, setToEdit: setPatientToEdit, selectedPatient }}
+      value={{ patients, addPatient, setToEdit: setPatientToEdit, selectedPatient, deletePatient }}
     >
       {children}
     </PatientsContext.Provider>
