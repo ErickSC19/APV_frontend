@@ -60,7 +60,7 @@ const Login = () => {
             <input
               type='text'
               placeholder='Registered email'
-              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
+              className='border w-full p-3 mt-3 bg-gray-50 placeholder:text-gray-400 rounded-xl focus:ring-indigo-600'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -72,7 +72,7 @@ const Login = () => {
             <input
               type='password'
               placeholder='password'
-              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
+              className='border w-full p-3 mt-3 bg-gray-50 placeholder:text-gray-400 rounded-xl focus:ring-indigo-600'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

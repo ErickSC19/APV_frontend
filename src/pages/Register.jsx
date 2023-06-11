@@ -66,49 +66,53 @@ const Register = () => {
         {msg && <Alert alert={alert} />}
         <form onSubmit={handleSubmit}>
           <div className='my-5'>
-            <label className='uppercase text-gray-600 block text-xl font-bold'>
+            <label htmlFor='name' className='uppercase text-gray-600 block text-xl font-bold'>
               Name
             </label>
             <input
               type='text'
               placeholder='your name here'
-              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
+              className='border w-full p-3 mt-3 bg-gray-50 placeholder:text-gray-400 rounded-xl focus:ring-indigo-600'
+              id='name'
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className='my-5'>
-            <label className='uppercase text-gray-600 block text-xl font-bold'>
+            <label htmlFor='email' className='uppercase text-gray-600 block text-xl font-bold'>
               Email
             </label>
             <input
               type='text'
               placeholder='your email here'
-              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
+              className='border w-full p-3 mt-3 bg-gray-50 placeholder:text-gray-400 rounded-xl focus:ring-indigo-600'
+              id='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className='my-5'>
-            <label className='uppercase text-gray-600 block text-xl font-bold'>
+            <label htmlFor='pass' className='uppercase text-gray-600 block text-xl font-bold'>
               Password
             </label>
             <input
               type='password'
               placeholder='password'
-              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
+              className='border w-full p-3 mt-3 bg-gray-50 placeholder:text-gray-400 rounded-xl focus:ring-indigo-600'
+              id='pass'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className='my-5'>
-            <label className='uppercase text-gray-600 block text-xl font-bold'>
+            <label htmlFor='repass' className='uppercase text-gray-600 block text-xl font-bold'>
               Repeat Password
             </label>
             <input
               type='password'
               placeholder='password'
-              className='border w-full p-3 mt-3 bg-gray-50 rounded-xl focus:ring-indigo-600'
+              className='border w-full p-3 mt-3 bg-gray-50 placeholder:text-gray-400 rounded-xl focus:ring-indigo-600'
+              id='repass'
               value={repeatPassword}
               onChange={(e) => setRepeatPassword(e.target.value)}
             />

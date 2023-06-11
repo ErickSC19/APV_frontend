@@ -61,7 +61,7 @@ const PatientForm = () => {
         Then you can keep{' '}<span className='text-indigo-600 font-bold'>track of their state</span>
       </p>
 
-      <form id='form' onSubmit={handleSubmit} className='bg-white py-10 px-5 nb-10 lg:mb-0 shadow-md rounded-md'>
+      <form id='form' onSubmit={handleSubmit} className='bg-white py-10 px-5 nb-10 lg:mb-0 shadow-md rounded-md mb-6 md:mb-0'>
         <div className='mb-5'>
           <label htmlFor='pet' className='text-gray-700 uppercase font-bold'>pet</label>
           <input id='pet' type='text' required placeholder="Pet's name" value={name} onChange={(e) => setName(e.target.value)} className='border-2 border-gray-300 w-full p-2 mt-2 placeholder-gray-400 rounded-md' />
