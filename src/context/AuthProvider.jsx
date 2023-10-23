@@ -1,4 +1,9 @@
 import { useState, useEffect, createContext } from 'react';
+import 'firebase/auth';
+import {
+  FirebaseAuthProvider
+} from '@react-firebase/auth';
+import { firebaseConfig, app } from '../config/firebase';
 import axiosClient from '../config/axios';
 // import useLocalStorage from '../hooks/useLocalStorage';
 
@@ -139,20 +144,24 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        auth,
-        closeSession,
-        setAuth,
-        updateVeterinarian,
-        updatePassword,
-        changeKeep,
-        keep,
-        loading
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <>
+      {/* <FirebaseAuthProvider {...firebaseConfig} firebase={app}> */}
+      <AuthContext.Provider
+        value={{
+          auth,
+          closeSession,
+          setAuth,
+          updateVeterinarian,
+          updatePassword,
+          changeKeep,
+          keep,
+          loading
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+      {/* </FirebaseAuthProvider> */}
+    </>
   );
 };
 
