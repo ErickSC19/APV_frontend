@@ -4,7 +4,7 @@ import usePatients from '../hooks/usePatients';
 const Patient = ({ patient }) => {
   const { setToEdit, deletePatient } = usePatients();
   const { email, name, owner, date, syntoms, _id } = patient;
-
+  console.log(patient);
   const dateFormat = (date) => {
     const newDate = new Date(date);
     return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(newDate);

@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 import Alert from '../components/Alert';
 import axiosClient from '../config/axios';
 
 const Register = () => {
-  const [name, setName] = useState('');
+  const navigate = useNavigate();
+  const { signup } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -14,7 +16,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if ([name, email, password, repeatPassword].includes('')) {
+    if ([email, password, repeatPassword].includes('')) {
       setAlert({ msg: 'Missing values', error: true });
       return;
     }
@@ -24,9 +26,9 @@ const Register = () => {
       return;
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       setAlert({
-        msg: 'Password is to short, six characters minimum',
+        msg: 'Password is to short, eight characters minimum',
         error: true
       });
       return;
@@ -37,15 +39,23 @@ const Register = () => {
     // Create on API
 
     try {
-      await axiosClient.post('/veterinarians', { name, email, password });
-
+      const splEmail = email.split('@');
+      const creds = await signup(email, password);
+      await axiosClient.post('/veterinarians', { firebaseUid: creds.uid, name: creds.user.displayName ? creds.user.displayName : splEmail[0], email, password, confirmed: true });
+      const { data } = await axiosClient.post('/veterinarians/login', {
+        email,
+        password
+      });
+      // eslint-disable-next-line no-undef
+      localStorage.setItem('token', data.token);
+      navigate('/');
       setAlert({
         msg: 'Succesful registration, check your email',
         error: false
       });
     } catch (error) {
       setAlert({
-        msg: error.response.data.msg,
+        msg: error.response.data.msg || error.message,
         error: true
       });
     }
@@ -69,14 +79,6 @@ const Register = () => {
             <label htmlFor='name' className='uppercase text-gray-600 block text-xl font-bold'>
               Name
             </label>
-            <input
-              type='text'
-              placeholder='your name here'
-              className='border w-full p-3 mt-3 bg-gray-50 placeholder:text-gray-400 rounded-xl focus:ring-indigo-600'
-              id='name'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
           </div>
           <div className='my-5'>
             <label htmlFor='email' className='uppercase text-gray-600 block text-xl font-bold'>

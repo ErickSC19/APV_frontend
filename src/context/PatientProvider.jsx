@@ -28,7 +28,7 @@ const PatientProvider = ({ children }) => {
       try {
         const { data } = await axiosClient.post('/patients', patient, config);
         const { createdAt, updatedAt, __v, ...newPatient } = data;
-
+        console.log(data);
         setPatients([newPatient, ...patients]);
       } catch (error) {
         console.log(error.response.data.msg);

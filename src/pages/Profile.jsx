@@ -4,7 +4,7 @@ import AdminNav from '../components/AdminNav';
 import Alert from '../components/Alert';
 
 const Profile = () => {
-  const { auth, updateVeterinarian } = useAuth();
+  const { user, updateVeterinarian } = useAuth();
   const [alert, setAlert] = useState({});
   const [profile, setProfile] = useState({});
 
@@ -23,8 +23,8 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    setProfile(auth.veterinarian);
-  }, [auth]);
+    setProfile(user);
+  }, [user]);
 
   const { msg } = alert;
 
@@ -47,7 +47,7 @@ const Profile = () => {
                 name='username'
                 id='username'
                 required
-                value={profile.name || ''}
+                value={profile.displayName || ''}
                 onChange={(e) => {
                   setProfile({ ...profile, name: e.target.value });
                 }}
@@ -99,8 +99,8 @@ const Profile = () => {
               type='submit'
               value='Guardar Cambios'
               disabled={
-                !(auth.veterinarian.name !== profile.name ||
-                auth.veterinarian.email !== profile.email)
+                !(user.name !== profile.name ||
+                user.email !== profile.email)
               }
               className='bg-primary-700 hover:bg-primary-800 disabled:bg-slate-400 disabled:hover:bg-slate-400 hover:cursor-pointer disabled:hover:cursor-default transition-colors px-10 py-3 font-bold text-white rounded-lg uppercase w-full mt-5'
             />

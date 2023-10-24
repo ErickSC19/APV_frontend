@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import useAuth from '../hooks/useAuth';
 
 const ProtectedLayout = () => {
-  const { auth, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return <main>loading</main>;
@@ -14,7 +14,7 @@ const ProtectedLayout = () => {
     <>
       <div className='flex flex-col items-center min-h-screen'>
         <Header />
-        {auth?.veterinarian?._id ? (<main className='container mx-auto mt-10'><Outlet /></main>) : <Navigate to='/' />}
+        {user?.email ? (<main className='container mx-auto mt-10'><Outlet /></main>) : <Navigate to='/' />}
         <Footer />
       </div>
     </>

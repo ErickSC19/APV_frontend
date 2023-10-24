@@ -1,9 +1,14 @@
 import { useState, useEffect, createContext } from 'react';
-import 'firebase/auth';
 import {
-  FirebaseAuthProvider
-} from '@react-firebase/auth';
-import { firebaseConfig, app } from '../config/firebase';
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  sendPasswordResetEmail
+} from 'firebase/auth';
+import { firebaseAuth } from '../config/firebase';
 import axiosClient from '../config/axios';
 // import useLocalStorage from '../hooks/useLocalStorage';
 
@@ -13,10 +18,76 @@ const AuthProvider = ({ children }) => {
   // const localToken = useLocalStorage('token');
   // const [config, setConfig] = useState({});
   const [loading, setLoading] = useState(true);
-  const [auth, setAuth] = useState({});
-  const [keep, setKeep] = useState(false);
+  const [user, setUser] = useState(null);
+  // const [keep, setKeep] = useState(false);
 
-  const changeKeep = (v) => {
+  // firebase
+  const signup = (email, password) => {
+    return createUserWithEmailAndPassword(firebaseAuth, email, password);
+  };
+
+  const login = (email, password) => {
+    return signInWithEmailAndPassword(firebaseAuth, email, password);
+  };
+
+  const loginWithGoogle = () => {
+    const googleProvider = new GoogleAuthProvider();
+    return signInWithPopup(firebaseAuth, googleProvider);
+  };
+
+  const logout = () => {
+    // eslint-disable-next-line no-undef
+    localStorage.removeItem('token');
+    signOut(firebaseAuth);
+  };
+
+  const resetPassword = async (email) => sendPasswordResetEmail(firebaseAuth, email);
+
+  useEffect(() => {
+    const unsubuscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      console.log({ currentUser });
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unsubuscribe();
+  }, []);
+  // ---------------
+
+  const updateVeterinarian = async (update) => {
+    // eslint-disable-next-line no-undef
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    };
+
+    try {
+      /* const { data } =  */
+      await axiosClient.put(
+        `/admins/profile/${update._id}`,
+        update,
+        config
+      );
+      // const { confirmed, password, token, __v, ...results } = data;
+      // setAuth(results);
+      return {
+        msg: 'Account Updated'
+      };
+    } catch (error) {
+      return {
+        msg: error.response.data.msg,
+        error: true
+      };
+    }
+  };
+  /*   const changeKeep = (v) => {
     setKeep(v);
   };
 
@@ -56,40 +127,6 @@ const AuthProvider = ({ children }) => {
     };
     authUser();
   }, []);
-
-  const updateVeterinarian = async (update) => {
-    // eslint-disable-next-line no-undef
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
-    };
-
-    try {
-      const { data } = await axiosClient.put(
-        `/admins/profile/${update._id}`,
-        update,
-        config
-      );
-      const { confirmed, password, token, __v, ...results } = data;
-      setAuth(results);
-      return {
-        msg: 'Account Updated'
-      };
-    } catch (error) {
-      return {
-        msg: error.response.data.msg,
-        error: true
-      };
-    }
-  };
 
   const updatePassword = async (pass) => {
     const { currentPassword, newPassword } = pass;
@@ -141,21 +178,27 @@ const AuthProvider = ({ children }) => {
         window.removeEventListener('beforeunload', handleBeforeUnload);
       };
     }
-  }, []);
+  }, []); */
 
   return (
     <>
       {/* <FirebaseAuthProvider {...firebaseConfig} firebase={app}> */}
       <AuthContext.Provider
         value={{
-          auth,
-          closeSession,
-          setAuth,
+          // auth,
+          // closeSession,
+          // setAuth,
           updateVeterinarian,
-          updatePassword,
-          changeKeep,
-          keep,
-          loading
+          // updatePassword,
+          // changeKeep,
+          // keep,
+          loading,
+          signup,
+          login,
+          user,
+          logout,
+          loginWithGoogle,
+          resetPassword
         }}
       >
         {children}

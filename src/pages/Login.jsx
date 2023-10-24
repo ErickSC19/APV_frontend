@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosClient from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Alert from '../components/Alert';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { keep, changeKeep } = useAuth();
+  const { login, loginWithGoogle, resetPassword } = useAuth();
   const [alert, setAlert] = useState({});
 
   const handleSubmit = async (e) => {
@@ -24,19 +25,66 @@ const Login = () => {
     try {
       const { data } = await axiosClient.post('/veterinarians/login', {
         email,
-        password,
-        keep
+        password
       });
       // eslint-disable-next-line no-undef
       localStorage.setItem('token', data.token);
-      setTimeout(() => {
-        // eslint-disable-next-line no-undef
-        location.reload();
-      }, 100);
+      await login(email, password);
+      navigate('/admin');
     } catch (error) {
       console.log(error);
       setAlert({
-        msg: error.response.data.msg,
+        msg: error.response.data.msg || error.message,
+        error: true
+      });
+    }
+  };
+
+  const handleGoogleSignin = async () => {
+    try {
+      const creds = await loginWithGoogle();
+      try {
+        const { data } = await axiosClient.post('/veterinarians/google-login', {
+          name: creds.user.displayName,
+          email: creds.user.email,
+          firebaseUid: creds.user.uid,
+          confirmed: true
+        });
+        // eslint-disable-next-line no-undef
+        localStorage.setItem('token', data.token);
+        navigate('/admin');
+      } catch (error) {
+        setAlert({
+          msg: error.response.data.msg,
+          error: true
+        });
+      }
+    } catch (error) {
+      setAlert({
+        msg: error.message,
+        error: true
+      });
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      setAlert({
+        msg: 'Write an email to reset password.',
+        error: true
+      });
+      return;
+    }
+    try {
+      await resetPassword(email);
+      setAlert({
+        msg: 'We sent you an email. Check your inbox.',
+        error: false
+      });
+    } catch (error) {
+      setAlert({
+        msg: error.response.data.msg || error.message,
         error: true
       });
     }
@@ -77,18 +125,19 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className='grid grid-cols-2 justify-items-start items-center mt-5'>
+          <div className='grid md:grid-cols-2 md:gap-0 grid-cols-1 gap-2 mt-5'>
             <input
               type='submit'
               value='Log in'
-              className='bg-indigo-700 py-3 px-10 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-indigo-800 transition-colors w-auto'
+              className='bg-indigo-700 py-3 px-10 rounded-xl md:rounded-tr-none md:rounded-br-none text-white uppercase font-bold hover:cursor-pointer hover:bg-indigo-800 transition-colors w-auto'
             />
-            <div className='flex items-center'>
-              <input type='checkbox' value={keep} name='Keep Session' id='keep' className='rounded-md h-5 w-5 hover:cursor-pointer mr-1 bg-gray-50 focus:ring-indigo-600 checked:hover:bg-indigo-800 checked:active:hover:bg-indigo-800 checked:focus:bg-indigo-600 checked:bg-indigo-600' onChange={e => changeKeep(!keep)} />
-              <label htmlFor='keep' className='block text-center text-gray-500'>
-                Keep session
-              </label>
-            </div>
+            <button
+              type='button'
+              onClick={handleGoogleSignin}
+              className='text-indigo-700 py-3 px-10 rounded-xl md:rounded-tl-none md:rounded-bl-none border-indigo-700 border-2 uppercase font-bold hover:cursor-pointer hover:bg-indigo-50 transition-colors w-auto'
+            >
+              Google login
+            </button>
           </div>
         </form>
         <nav className='mt-10 lg:flex lg:justify-between'>
@@ -96,13 +145,14 @@ const Login = () => {
             If you don't have an account you can register{' '}
             <span className='text-indigo-400 underline hover:text-indigo-500 transition-colors'>here</span>
           </Link>
-          <Link
+          <a
             className='block text-center text-gray-500 mt-5 lg:mt-0'
-            to='/change-password'
+            href='#!'
+            onClick={handleResetPassword}
           >
             Forgot yor password? you can retrieve it{' '}
             <span className='text-indigo-400 underline hover:text-indigo-500 transition-colors'>here</span>
-          </Link>
+          </a>
         </nav>
       </div>
     </>

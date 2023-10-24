@@ -3,15 +3,16 @@ import useAuth from '../hooks/useAuth';
 import { useEffect } from 'react';
 
 const AuthLayout = () => {
-  const { auth, loading } = useAuth();
+  // const navigate = useNavigate();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (auth._id) {
+    if (user?.email) {
       // setTimeout(() => {
       window.location.reload(false);
       // }, 10);
     }
-  }, [auth]);
+  }, [user]);
 
   if (loading) {
     return <main>loading</main>;
@@ -19,7 +20,7 @@ const AuthLayout = () => {
   return (
     <>
       <main className='container mx-auto md:grid md:grid-cols-2 h-screen gap-12 p-5 items-center'>
-        {auth?.veterinarian?._id ? <Navigate to='/admin' /> : <Outlet />}
+        {user?.email ? <Navigate to='/admin' /> : <Outlet />}
       </main>
     </>
   );

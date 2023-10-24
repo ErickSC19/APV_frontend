@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 const Header = () => {
-  const { closeSession } = useAuth();
+  const { logout } = useAuth();
 
   return (
     <header className='py-10 bg-indigo-600 w-full'>
@@ -12,7 +12,7 @@ const Header = () => {
         <nav className='flex flex-col items-center lg:flex-row mt-5 lg:mt-0 gap-4'>
           <Link to='/admin' className='text-white text-lg hover:text-indigo-100 uppercase'>Patients</Link>
           <Link to='/admin/profile' className='text-white text-lg hover:text-indigo-100 uppercase'>Profile</Link>
-          <button type='button' onClick={() => closeSession()} className='text-white text-lg hover:text-indigo-100 uppercase'>Close Session</button>
+          <button type='button' onClick={() => logout()} className='text-white text-lg hover:text-indigo-100 uppercase'>Close Session</button>
         </nav>
       </div>
     </header>

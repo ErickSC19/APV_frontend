@@ -5,7 +5,7 @@ import Alert from '../components/Alert';
 import useAuth from '../hooks/useAuth';
 
 const NewPassword = () => {
-  const { updatePassword } = useAuth();
+  const { resetPassword } = useAuth();
   const [alert, setAlert] = useState({});
   const [password, setPassword] = useState({});
 
@@ -28,7 +28,7 @@ const NewPassword = () => {
       return;
     }
 
-    const result = await updatePassword(password);
+    const result = await resetPassword(password);
     setAlert(result);
   };
 
