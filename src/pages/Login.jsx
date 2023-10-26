@@ -106,7 +106,7 @@ const Login = () => {
               Email
             </label>
             <input
-              type='text'
+              type='email'
               placeholder='Registered email'
               className='border w-full p-3 mt-3 bg-gray-50 placeholder:text-gray-400 rounded-xl focus:ring-indigo-600'
               value={email}

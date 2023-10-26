@@ -41,7 +41,7 @@ const Register = () => {
     try {
       const splEmail = email.split('@');
       const creds = await signup(email, password);
-      await axiosClient.post('/veterinarians', { firebaseUid: creds.uid, name: creds.user.displayName ? creds.user.displayName : splEmail[0], email, password, confirmed: true });
+      await axiosClient.post('/veterinarians', { firebaseUid: creds.user.uid, name: creds.user.displayName ? creds.user.displayName : splEmail[0], email, password, confirmed: true });
       const { data } = await axiosClient.post('/veterinarians/login', {
         email,
         password
@@ -75,11 +75,6 @@ const Register = () => {
       <div className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
         {msg && <Alert alert={alert} />}
         <form onSubmit={handleSubmit}>
-          <div className='my-5'>
-            <label htmlFor='name' className='uppercase text-gray-600 block text-xl font-bold'>
-              Name
-            </label>
-          </div>
           <div className='my-5'>
             <label htmlFor='email' className='uppercase text-gray-600 block text-xl font-bold'>
               Email

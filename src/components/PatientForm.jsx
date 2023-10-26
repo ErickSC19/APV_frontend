@@ -17,7 +17,11 @@ const PatientForm = () => {
     e.preventDefault();
 
     try {
-      addPatient({ name, owner, email, date, syntoms, _id: id });
+      const patient = { name, owner, email, date, syntoms };
+      if (id) {
+        patient._id = id;
+      }
+      addPatient(patient);
       setAlert({
         msg: 'Data Saved',
         error: false

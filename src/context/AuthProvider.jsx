@@ -44,8 +44,19 @@ const AuthProvider = ({ children }) => {
   const resetPassword = async (email) => sendPasswordResetEmail(firebaseAuth, email);
 
   useEffect(() => {
-    const unsubuscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+    const unsubuscribe = onAuthStateChanged(firebaseAuth, async (currentUser) => {
       console.log({ currentUser });
+      // eslint-disable-next-line no-undef
+      if (!localStorage.getItem('token') && currentUser) {
+        const { data } = await axiosClient.post('/veterinarians/google-login', {
+          name: currentUser.displayName,
+          email: currentUser.email,
+          firebaseUid: currentUser.uid,
+          confirmed: true
+        });
+        // eslint-disable-next-line no-undef
+        localStorage.setItem('token', data.token);
+      }
       setUser(currentUser);
       setLoading(false);
     });
