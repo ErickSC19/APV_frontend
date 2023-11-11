@@ -44,8 +44,9 @@ const Login = () => {
     try {
       const creds = await loginWithGoogle();
       try {
+        const splEmail = email.split('@');
         const { data } = await axiosClient.post('/veterinarians/google-login', {
-          name: creds.user.displayName,
+          name: creds.user?.displayName || splEmail[0],
           email: creds.user.email,
           firebaseUid: creds.user.uid,
           confirmed: true

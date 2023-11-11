@@ -39,7 +39,8 @@ const Register = () => {
     // Create on API
 
     try {
-      const splEmail = email.split('@');
+      const splEmail = await email.split('@');
+      console.log(splEmail[0]);
       const creds = await signup(email, password);
       await axiosClient.post('/veterinarians', { firebaseUid: creds.user.uid, name: creds.user.displayName ? creds.user.displayName : splEmail[0], email, password, confirmed: true });
       const { data } = await axiosClient.post('/veterinarians/login', {
