@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
       console.log({ currentUser });
       // eslint-disable-next-line no-undef
       if (!localStorage.getItem('token') && currentUser) {
-        const { data } = await axiosClient.post('/veterinarians/google-login', {
+        const { data } = await axiosClient.post('/veterinarians/firebase-login', {
           name: currentUser.displayName,
           email: currentUser.email,
           firebaseUid: currentUser.uid,

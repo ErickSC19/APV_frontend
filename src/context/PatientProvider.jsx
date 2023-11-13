@@ -15,12 +15,18 @@ const PatientProvider = ({ children }) => {
     }
   };
 
-  const addPatient = async (patient) => {
-    if (patient._id) {
+  const addPatient = async (patient, id) => {
+    if (id) {
       try {
-        const { data } = await axiosClient.put(`/patients/${patient._id}`, patient, config);
-        const patientsUpdate = patients.map(pstate => pstate._id === data._id ? data : pstate);
-        setPatients(patientsUpdate);
+        if (Object.keys(patient).length < 3 && Object.keys(patient).length > 0) {
+          const { data } = await axiosClient.patch(`/patients/${id}`, patient, config);
+          const patientsUpdate = patients.map(pstate => pstate._id === data._id ? data : pstate);
+          setPatients(patientsUpdate);
+        } else if (Object.keys(patient).length > 3) {
+          const { data } = await axiosClient.put(`/patients/${id}`, patient, config);
+          const patientsUpdate = patients.map(pstate => pstate._id === data._id ? data : pstate);
+          setPatients(patientsUpdate);
+        }
       } catch (error) {
         console.log(error.response.data.msg);
       }
